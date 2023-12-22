@@ -1,6 +1,8 @@
 import React from 'react';
-import {SubmitHandler, useForm} from "react-hook-form";
+import {SubmitHandler, useForm , Controller} from "react-hook-form";
 import { InformationCircleIcon , StarIcon, ChevronDownIcon } from '@heroicons/react/24/solid'
+
+import {CustomSelect} from "./CustomSelect";
 
 type PokemonTrainerFormValuesType = {
 	firstName: string;
@@ -8,10 +10,21 @@ type PokemonTrainerFormValuesType = {
 	pokemonTeam:[any]
 };
 
+export const pokemonOptions = [
+	{ value: 'bulbasaur', label: 'Bulbasaur' },
+	{ value: 'charmander', label: 'Charmander' },
+	{ value: 'Pokemon', label: 'Pokemon' },
+	{ value: 'Naruto', label: 'Naruto' },
+	{ value: 'charmander1', label: 'Charmander22' },
+	{ value: '4', label: 'Charmander9' },
+	{ value: '5', label: 'CharmanderU' },
+];
+
 const PokemonTrainerForm = () => {
 	const {
 		register,
 		handleSubmit,
+		control,
 		formState: { errors },
 	} = useForm<PokemonTrainerFormValuesType>();
 
@@ -21,7 +34,6 @@ const PokemonTrainerForm = () => {
 			secondName: data.secondName,
 			pokemonTeam:data.pokemonTeam
 		};
-		console.log('data' , formData)
 	};
 
 	return (
@@ -53,6 +65,26 @@ const PokemonTrainerForm = () => {
 							required: "This information is required",
 						})}
 						placeholder="Enter your second name"
+					/>
+				</div>
+
+				<div className="mt-6">
+					<label htmlFor="pokemonTeam" className="block font-medium">
+						<span> Pokemon Team <InformationCircleIcon className="w-5 h-5 inline-block mb-1 " /></span>
+					</label>
+					<Controller
+						name="pokemonTeam"
+						control={control}
+						render={({ field }) => (
+							<CustomSelect
+								label={'Select a pokemons'}
+							options={pokemonOptions}
+							value={field.value}
+							onChange={(selectedOptions) => {
+								field.onChange(selectedOptions);
+							}}
+							/>
+						)}
 					/>
 				</div>
 
