@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {SubmitHandler, useForm , Controller} from "react-hook-form";
 import { InformationCircleIcon , StarIcon, ChevronDownIcon } from '@heroicons/react/24/solid'
 
@@ -36,6 +36,9 @@ const PokemonTrainerForm = () => {
 		};
 	};
 
+	const [isFirstNameOnFocus, setIsFirstNameOnFocus] = useState(false);
+	const [isSecondNameOnFocus, setIsSecondNameOnFocus] = useState(false);
+
 	return (
 		<div className={'h-[500px] w-[500px] bg-white rounded-lg shadow-2xl p-8 flex flex-col'}>
 			<h1 className={'text-2xl font-semibold'}>Create your Pokemon team</h1>
@@ -47,8 +50,10 @@ const PokemonTrainerForm = () => {
 						<span> First Name <InformationCircleIcon className="w-5 h-5 inline-block mb-1 " /></span>
 					</label>
 					<input
-						className="min-w-[400px] h-[40px] rounded-md border border-gray-500 px-3 py-4"
+						className={`py-4 form_input ${isFirstNameOnFocus && 'focused_input'}`}
+						onClick={()=> setIsFirstNameOnFocus(true)}
 						{...register("firstName", {
+							onBlur:()=>setIsFirstNameOnFocus(false),
 							required: "This information is required",
 						})}
 						placeholder="Enter your first name"
@@ -60,8 +65,10 @@ const PokemonTrainerForm = () => {
 						<span> Second Name <InformationCircleIcon className="w-5 h-5 inline-block mb-1 " /></span>
 					</label>
 					<input
-						className="min-w-[400px] h-[40px] rounded-md border border-gray-500 px-3 py-4"
+						onClick={()=>setIsSecondNameOnFocus(true)}
+						className={`py-4 form_input ${isSecondNameOnFocus && 'focused_input'}`}
 						{...register("secondName", {
+							onBlur:()=>setIsSecondNameOnFocus(false),
 							required: "This information is required",
 						})}
 						placeholder="Enter your second name"

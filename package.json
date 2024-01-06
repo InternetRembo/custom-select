@@ -1,4 +1,4 @@
-{
+{ 
   "name": "proqio-technical-interview",
   "private": true,
   "version": "1.0.0",
@@ -6,22 +6,34 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.18",
+    "@storybook/addon-postcss": "^2.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.48.2",
     "react-select": "^5.8.0"
   },
   "devDependencies": {
+    "@storybook/addon-essentials": "7.6.7",
+    "@storybook/addon-interactions": "7.6.7",
+    "@storybook/addon-links": "7.6.7",
+    "@storybook/addon-onboarding": "1.0.10",
+    "@storybook/blocks": "7.6.7",
+    "@storybook/react": "7.6.7",
+    "@storybook/react-vite": "7.6.7",
+    "@storybook/test": "7.6.7",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-react": "^3.1.0",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
     "prettier": "3.1.0",
+    "storybook": "7.6.7",
     "tailwindcss": "^3.3.5",
     "typescript": "^4.9.3",
     "vite": "^4.1.0"
