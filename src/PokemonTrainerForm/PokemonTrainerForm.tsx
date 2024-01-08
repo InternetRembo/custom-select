@@ -3,6 +3,7 @@ import {SubmitHandler, useForm , Controller} from "react-hook-form";
 import { InformationCircleIcon , StarIcon, ChevronDownIcon } from '@heroicons/react/24/solid'
 
 import {CustomSelect} from "./CustomSelect";
+import {ErrorMessage} from "./ErrorMessage";
 
 type PokemonTrainerFormValuesType = {
 	firstName: string;
@@ -50,14 +51,20 @@ const PokemonTrainerForm = () => {
 						<span> First Name <InformationCircleIcon className="w-5 h-5 inline-block mb-1 " /></span>
 					</label>
 					<input
-						className={`py-4 form_input ${isFirstNameOnFocus && 'focused_input'}`}
+						className={`py-4 form_input
+						${isFirstNameOnFocus && 'focused_input'}
+						${errors.firstName ? 'border-red-500 outline outline-1 outline-red-500' : 'hover:hovered_input'}`}
+
 						onClick={()=> setIsFirstNameOnFocus(true)}
+
 						{...register("firstName", {
 							onBlur:()=>setIsFirstNameOnFocus(false),
-							required: "This information is required",
+							required: "Please enter your first name",
 						})}
 						placeholder="Enter your first name"
 					/>
+
+					{errors.firstName && <ErrorMessage error={errors.firstName.message} />}
 				</div>
 
 				<div className="mt-6">
@@ -65,14 +72,21 @@ const PokemonTrainerForm = () => {
 						<span> Second Name <InformationCircleIcon className="w-5 h-5 inline-block mb-1 " /></span>
 					</label>
 					<input
+						className={`py-4 form_input 
+						${isSecondNameOnFocus && 'focused_input'}
+						${errors.secondName ? 'border-red-500 outline outline-1 outline-red-500' : 'hover:hovered_input'}
+						`}
+
 						onClick={()=>setIsSecondNameOnFocus(true)}
-						className={`py-4 form_input ${isSecondNameOnFocus && 'focused_input'}`}
+
 						{...register("secondName", {
 							onBlur:()=>setIsSecondNameOnFocus(false),
-							required: "This information is required",
+							required: "Please enter your second name",
 						})}
 						placeholder="Enter your second name"
 					/>
+
+					{errors.secondName && <ErrorMessage error={errors.secondName.message} />}
 				</div>
 
 				<div className="mt-6">
@@ -80,13 +94,17 @@ const PokemonTrainerForm = () => {
 						<span> Pokemon Team <InformationCircleIcon className="w-5 h-5 inline-block mb-1 " /></span>
 					</label>
 					<Controller
-						name="pokemonTeam"
 						control={control}
+						{...register("pokemonTeam", {
+							onBlur:()=>setIsSecondNameOnFocus(false),
+							required: "Please choose 4 pokemons",
+						})}
 						render={({ field }) => (
 							<CustomSelect
 								label={'Select a pokemons'}
 							options={pokemonOptions}
 							value={field.value}
+							isError={errors.pokemonTeam?.message}
 							onChange={(selectedOptions) => {
 								field.onChange(selectedOptions);
 							}}
@@ -99,7 +117,7 @@ const PokemonTrainerForm = () => {
 						type="submit"
 						className="h-12 bg-blue-800 mt-6 hover:bg-blue-700 p-3 rounded-md bg-blue-800 text-white flex items-center gap-1 "
 					>
-					 <StarIcon className={'h-[20px]'} />	Submit <ChevronDownIcon className={'h-[16px] font-bold'}/>
+					 <StarIcon className={'h-[20px]'} /> Submit <ChevronDownIcon className={'h-[16px] font-bold'}/>
 					</button>
 
 			</form>

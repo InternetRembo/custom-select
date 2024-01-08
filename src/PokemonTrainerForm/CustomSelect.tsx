@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {XMarkIcon, ChevronDownIcon, ChevronUpIcon} from '@heroicons/react/24/solid'
+import {ErrorMessage} from "./ErrorMessage";
 
 export type SelectOption = {
 	label: string;
@@ -11,14 +12,15 @@ type SelectProps = {
 	onChange: (value: SelectOption[]) => void;
 	options: SelectOption[];
 	label?: string;
-	hover?: boolean
-	focus?: boolean
+	isHover?: boolean
+	isFocus?: boolean
 	textValue?: string
-	disabled?: boolean
+	isDisabled?: boolean
+	isError?:string | undefined
 };
 
-export function CustomSelect({value, onChange, options, label, hover, focus, textValue, disabled}: SelectProps) {
-	const [isOpen, setIsOpen] = useState(focus);
+export function CustomSelect({value, onChange, options, label, isHover, isFocus, textValue, isDisabled, isError}: SelectProps) {
+	const [isOpen, setIsOpen] = useState(isFocus);
 	const [inputValue, setInputValue] = useState(textValue || '');
 
 	const inputRef = useRef<HTMLInputElement | null>(null);
@@ -56,21 +58,23 @@ export function CustomSelect({value, onChange, options, label, hover, focus, tex
 	}
 
 	return (
+		<div>
 		<div
 			onBlur={() => {
 				setIsOpen(false)
 			}}
 			onClick={() => {
 
-				!disabled && setIsOpen(!isOpen)
+				!isDisabled && setIsOpen(!isOpen)
 			}}
 
 			tabIndex={0}
 
-			className={`box-border flex items-center relative form_input 
+			className={`box-border flex items-center relative form_input
             ${isOpen ? 'focused_input' : ''}
-            ${hover ? 'outline outline-1 outline-indigo-600 border-indigo-600' : ''}
-            ${disabled ? 'bg-slate-100 cursor-not-allowed hover:outline-none hover:border-gray-500 ' : 'bg-white cursor-text'}`}
+            ${isHover ? 'outline outline-1 outline-indigo-600 border-indigo-600' : ''}
+            ${isError ? 'border-red-500 outline outline-1 outline-red-500' : 'hover:hovered_input'}
+            ${isDisabled ? 'bg-slate-100 cursor-not-allowed hover:outline-none hover:border-gray-500 ' : 'bg-white cursor-text'}`}
 		>
 			<div ref={badgeBlockRef} onWheel={handleWheel}
 				 className={'flex gap-2 flex-nowrap w-full justify-start  w-[90%] mr-4 overflow-x-hidden'}>
@@ -85,24 +89,25 @@ export function CustomSelect({value, onChange, options, label, hover, focus, tex
 									   onClick={(e) => {
 										   e.stopPropagation();
 										   selectOption(v);
-									   }}/>
+									   }}
+							/>
 						</span>
 					</div>
 				))}
 				<input ref={inputRef}
-					   disabled={disabled}
+					   disabled={isDisabled}
 					   value={inputValue}
 					   onChange={(e) => setInputValue(e.target.value)}
 					   placeholder={value?.length > 0 ? '' : label || ''}
 					   className={`w-full border-0 outline-none box-border mr-2
-					    ${disabled ? 'bg-slate-100 cursor-not-allowed' : ''}
+					    ${isDisabled ? 'bg-slate-100 cursor-not-allowed' : ''}
 						${value?.length === 4 ? 'hidden' : 'block'} `}/>
-			</div>
 
+			</div>
 			<div className={'w-[30px] h-[38px] '}>
 				{isOpen
 					? <ChevronUpIcon className={'w-6 h-5  inline-block absolute right-1 top-[10px] cursor-pointer '}/>
-					: <ChevronDownIcon className={`w-6 h-5 inline-block absolute right-1 top-[10px]  ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}/>
+					: <ChevronDownIcon className={`w-6 h-5 inline-block absolute right-1 top-[10px]  ${isDisabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}/>
 				}
 			</div>
 
@@ -147,6 +152,8 @@ export function CustomSelect({value, onChange, options, label, hover, focus, tex
 						))}
                 </ul>
 			}
+		</div>
+			{isError && <ErrorMessage error={isError} />}
 		</div>
 	);
 }
