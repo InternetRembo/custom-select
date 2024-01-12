@@ -1,11 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import {XMarkIcon, ChevronDownIcon, ChevronUpIcon} from '@heroicons/react/24/solid'
-import {ErrorMessage} from "./ErrorMessage";
-
-export type SelectOption = {
-	label: string;
-	value: string | number;
-};
 
 type SelectProps = {
 	value: SelectOption[];
@@ -17,9 +11,23 @@ type SelectProps = {
 	textValue?: string
 	isDisabled?: boolean
 	isError?:string | undefined
+	maxSelections?:number
 };
 
-export function CustomSelect({value, onChange, options, label, isHover, isFocus, textValue, isDisabled, isError}: SelectProps) {
+export const CustomSelect: FC<SelectProps> = (
+	{
+		value,
+		onChange,
+		options,
+		label,
+		isHover,
+		isFocus,
+		textValue,
+		isDisabled,
+		isError,
+		maxSelections,
+	}) => {
+
 	const [isOpen, setIsOpen] = useState(isFocus);
 	const [inputValue, setInputValue] = useState(textValue || '');
 
@@ -27,7 +35,7 @@ export function CustomSelect({value, onChange, options, label, isHover, isFocus,
 	const badgeBlockRef = useRef<HTMLDivElement | null>(null);
 
 	useEffect(() => {
-		if (value?.length === 4) {
+		if ( maxSelections && value?.length === maxSelections)  {
 			setIsOpen(false)
 		}
 	}, [value])
@@ -64,8 +72,9 @@ export function CustomSelect({value, onChange, options, label, isHover, isFocus,
 				setIsOpen(false)
 			}}
 			onClick={() => {
-
-				!isDisabled && setIsOpen(!isOpen)
+				if (!maxSelections || !isDisabled && value?.length !== maxSelections){
+					setIsOpen(!isOpen)
+				}
 			}}
 
 			tabIndex={0}
@@ -101,7 +110,7 @@ export function CustomSelect({value, onChange, options, label, isHover, isFocus,
 					   placeholder={value?.length > 0 ? '' : label || ''}
 					   className={`w-full border-0 outline-none box-border mr-2
 					    ${isDisabled ? 'bg-slate-100 cursor-not-allowed' : ''}
-						${value?.length === 4 ? 'hidden' : 'block'} `}/>
+						${ maxSelections && value?.length === maxSelections ? 'hidden' : 'block'} `}/>
 
 			</div>
 			<div className={'w-[30px] h-[38px] '}>
@@ -136,7 +145,7 @@ export function CustomSelect({value, onChange, options, label, isHover, isFocus,
 							(!value || !value?.some((v) => v.value === option.value)) &&
 							(!inputValue || option.label.toLowerCase().includes(inputValue.toLowerCase()))
 						)
-						.map((option, index) => (
+						.map((option) => (
 							<li
 								onMouseDown={(e) => {
 									if (e.button === 0) {
@@ -153,7 +162,7 @@ export function CustomSelect({value, onChange, options, label, isHover, isFocus,
                 </ul>
 			}
 		</div>
-			{isError && <ErrorMessage error={isError} />}
+			{isError && <span className="text-md font-medium text-red-500 ml-2">{isError}</span>}
 		</div>
 	);
 }

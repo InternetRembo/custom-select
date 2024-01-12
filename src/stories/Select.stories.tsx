@@ -1,41 +1,20 @@
-import {Meta} from "@storybook/react";
-import {CustomSelect, SelectOption} from "../PokemonTrainerForm/CustomSelect";
 import React, {FC, ReactNode, useState} from "react";
+import {Meta} from "@storybook/react";
 
-const meta: Meta<typeof CustomSelect> = {
-	title: 'Select',
-	component: CustomSelect,
-	parameters: {
-		layout: 'fullscreen',
-	},
-	tags: ['autodocs'],
-	argTypes: {},
-};
-export default meta;
-
-type StoryCaseProps = {
-	children: ReactNode;
-	isDropdownOpen?: boolean;
-};
-
-const StoryCase: FC<StoryCaseProps> = ({children, isDropdownOpen}) => {
-	const [isOpen, setIsOpen] = useState(isDropdownOpen);
-
-	return (
-		<div className={` ${isOpen ? 'h-[340px]' : 'h-[160px]'} p-4 flex flex-col`}>
-			<div onClick={() => setIsOpen(!isOpen)} onBlur={() => setIsOpen(false)}>
-				{children}
-			</div>
-		</div>
-	);
-};
+import {CustomSelect} from "../pokemonTrainerForm/CustomSelect";
 
 const defaultOptions = [
 	{value: 'blue', label: 'Blue'},
 	{value: 'green', label: 'Green'},
 	{value: 'yellow', label: 'Yellow'},
 	{value: 'red', label: 'Red'},
+	{value: 'white', label: 'White'},
 ];
+
+type StoryCaseProps = {
+	children: ReactNode;
+	isDropdownOpen?: boolean;
+};
 
 interface StoryModuleProps {
 	label: string;
@@ -49,6 +28,18 @@ interface StoryModuleProps {
 	isDisabled?: boolean;
 	isError?: string | undefined
 }
+
+const StoryCase: FC<StoryCaseProps> = ({children, isDropdownOpen}) => {
+	const [isOpen, setIsOpen] = useState(isDropdownOpen);
+
+	return (
+		<div className={` ${isOpen ? 'h-[340px]' : 'h-[160px]'} p-4 flex flex-col`}>
+			<div onClick={() => setIsOpen(!isOpen)} onBlur={() =>{setIsOpen(false)}}>
+				{children}
+			</div>
+		</div>
+	);
+};
 
 const StoryModule: FC<StoryModuleProps> = (
 	{
@@ -89,6 +80,17 @@ const StoryModule: FC<StoryModuleProps> = (
 		</StoryCase>
 	);
 };
+
+const meta: Meta<typeof CustomSelect> = {
+	title: 'Select',
+	component: CustomSelect,
+	parameters: {
+		layout: 'fullscreen',
+	},
+	tags: ['autodocs'],
+	argTypes: {},
+};
+export default meta;
 
 export const Default = () => {
 	const [values, setValues] = useState<SelectOption[]>([]);

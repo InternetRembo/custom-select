@@ -1,4 +1,4 @@
-{ 
+{
   "name": "proqio-technical-interview",
   "private": true,
   "version": "1.0.0",
@@ -13,6 +13,7 @@
   "dependencies": {
     "@heroicons/react": "^2.0.18",
     "@storybook/addon-postcss": "^2.0.0",
+    "axios": "^1.6.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.48.2",
@@ -22,7 +23,6 @@
     "@storybook/addon-essentials": "7.6.7",
     "@storybook/addon-interactions": "7.6.7",
     "@storybook/addon-links": "7.6.7",
-    "@storybook/addon-onboarding": "1.0.10",
     "@storybook/blocks": "7.6.7",
     "@storybook/react": "7.6.7",
     "@storybook/react-vite": "7.6.7",
